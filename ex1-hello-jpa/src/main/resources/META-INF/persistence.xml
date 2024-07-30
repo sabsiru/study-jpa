@@ -16,7 +16,7 @@
             <property name="hibernate.format_sql" value="true"/>
             <property name="hibernate.use_sql_comments" value="true"/>
             <property name="hibernate.jdbc.batch_size" value="10"/>
-            <property name="hibernate.hbm2ddl.auto" value="update" />
+            <property name="hibernate.hbm2ddl.auto" value="create" />
             <!--create = 기존테이블 삭제 후 다시 생성하는 옵션-->
             <!--drop = create와 같으나 종료시점에 테이블 drop-->
             <!--update = 변경분만 반영 (운영DB에는 사용하면 안됨) 추가사항만 되고 삭제사항은 적용 x-->

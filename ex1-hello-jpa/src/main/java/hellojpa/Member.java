@@ -1,9 +1,6 @@
 package hellojpa;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 //@Table (name = "MBR")  테이블의 이름 MBR을 매핑한다.
@@ -49,7 +46,9 @@ public class Member {
         return team;
     }
 
-    public void setTeam(Team team) {
+    //단순 setter가 아닌 편의 메서드가 들어가면 메서드의 이름을 바꿔주는게 구분하기 좋다.
+    public void changeTeam(Team team) {
         this.team = team;
+        team.getMembers().add(this);
     }
 }

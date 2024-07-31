@@ -13,8 +13,9 @@ public class Team {
     @Column(name="TEAM_NAME")
     private String teamName;
 
-    //양방향 연관관계
-    @OneToMany(mappedBy = "team")
+    //일대다 연관관계
+    @OneToMany
+    @JoinColumn(name = "TEAM_ID")
     private List<Member> members = new ArrayList<>();
 
 

@@ -20,11 +20,7 @@ public class Member {
     @Column(name = "name", nullable = false)
     private String username;
 
-    //객체 연관 관계
-    @ManyToOne //관계
-    @JoinColumn(name="TEAM_ID") //join할 컬럼
-    private Team team;
-
+    //일대다 연관관계
 
     public Long getId() {
         return id;
@@ -42,13 +38,12 @@ public class Member {
         this.username = username;
     }
 
-    public Team getTeam() {
-        return team;
-    }
+
+
 
     //단순 setter가 아닌 편의 메서드가 들어가면 메서드의 이름을 바꿔주는게 구분하기 좋다.
-    public void changeTeam(Team team) {
-        this.team = team;
-        team.getMembers().add(this);
-    }
+//    public void changeTeam(Team team) {
+//        this.team = team;
+//        team.getMembers().add(this);
+//    }
 }

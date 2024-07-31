@@ -13,36 +13,19 @@ public class JpaMain {
         tx.begin();
 
         try {
-
-            /*
-            캐시에서 값을 가져 오기 때문에 select 쿼리가 나오지 않음
-            만약 쿼리를 보고 싶다면 flush()를 통해 쿼리를 인서트하고 캐시를 초기화 해주면 쿼리가 나타남
-            */
-            //저장
-            Team team = new Team();
-            team.setTeamName("TeamA");
-            em.persist(team);
-
             Member member = new Member();
             member.setUsername("member1");
-            member.changeTeam(team);
+
             em.persist(member);
-            //team.getMembers().add(member); //setTeam에 메소드 생성
 
-            //em.flush(); // 쿼리 전송
-            //em.clear(); // 캐시 초기화
+            Team team = new Team();
+            team.setTeamName("teamA");
+            //일대다 연관관계 멤버객체에 접근 하여야 하기때문에
+            //update 쿼리가 나가게 된다.
+            team.getMembers().add(member);
 
-            Team findTeam = em.find(Team.class, team.getId());
-            List<Member> members = findTeam.getMembers();
-            System.out.println("====================");
-            for (Member m : members) {
-                System.out.println("m.getUsername() = " + m.getUsername());
-            }
-            System.out.println("====================");
-
-
-            //em.persist();
-            tx.commit(); // DB에 저장
+            em.persist(team);
+            tx.commit();
         } catch (Exception e) {
             tx.rollback();
         } finally {

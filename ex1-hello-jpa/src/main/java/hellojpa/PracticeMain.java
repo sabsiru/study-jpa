@@ -19,7 +19,7 @@ public class PracticeMain {
             Team team1 = em.find(Team.class, 2L);
 
             member.setUsername("Member3");
-            member.changeTeam(team1);
+            //member.changeTeam(team1);
             em.persist(member);
             tx.commit(); // DB에 저장
         } catch (Exception e) {

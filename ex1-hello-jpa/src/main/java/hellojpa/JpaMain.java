@@ -2,6 +2,7 @@ package hellojpa;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 public class JpaMain {
     public static void main(String[] args) {
@@ -13,18 +14,21 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Member member = new Member();
-            member.setUsername("member1");
+            Movie movie = new Movie();
+            movie.setActor("손석구");
+            movie.setDirector("마동석");
+            movie.setName("범죄도시2");
+            movie.setPrice(10000);
 
-            em.persist(member);
+            Book book = new Book();
+            book.setTitle("해리포터");
+            book.setName("마법사의 돌");
+            book.setAuthor("다니엘 래드클리프");
+            book.setAuthor("조앤 K 롤링");
+            book.setPrice(17500);
 
-            Team team = new Team();
-            team.setTeamName("teamA");
-            //일대다 연관관계 멤버객체에 접근 하여야 하기때문에
-            //update 쿼리가 나가게 된다.
-            team.getMembers().add(member);
-
-            em.persist(team);
+            em.persist(movie);
+            em.persist(book);
             tx.commit();
         } catch (Exception e) {
             tx.rollback();

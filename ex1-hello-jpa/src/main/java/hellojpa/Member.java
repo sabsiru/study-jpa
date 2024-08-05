@@ -9,7 +9,7 @@ import javax.persistence.*;
         sequenceName = "MEMBER_SEQ",
         initialValue = 1, allocationSize = 50
 ) //시퀀스 세팅
-public class Member {
+public class Member extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE

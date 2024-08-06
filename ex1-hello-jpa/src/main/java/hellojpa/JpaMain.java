@@ -14,24 +14,25 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Movie movie = new Movie();
-            movie.setActor("손석구");
-            movie.setDirector("마동석");
-            movie.setName("범죄도시2");
-            movie.setPrice(10000);
+            Team team = new Team();
+            team.setTeamName("aaa");
+            em.persist(team);
+            Member member = new Member();
+            member.setUsername("김영한");
+            member.setTeam(team);
+            em.persist(member);
 
-            Book book = new Book();
-            book.setTitle("해리포터");
-            book.setName("마법사의 돌");
-            book.setAuthor("다니엘 래드클리프");
-            book.setAuthor("조앤 K 롤링");
-            book.setPrice(17500);
+            em.flush();
+            em.clear();
 
-            em.persist(movie);
-            em.persist(book);
+            Member findMember = em.find(Member.class, member.getId());
+            System.out.println("findMember = " + findMember.getTeam().getClass());
+
             tx.commit();
         } catch (Exception e) {
+            System.out.println("rollback");
             tx.rollback();
+            e.printStackTrace();
         } finally {
             em.close();
         }

@@ -1,5 +1,7 @@
 package hellojpa;
 
+import org.hibernate.annotations.Fetch;
+
 import javax.persistence.*;
 
 @Entity
@@ -20,10 +22,18 @@ public class Member extends BaseEntity{
     @Column(name = "name", nullable = false)
     private String username;
 
-    //일대일 관계
-    @OneToOne
-    @JoinColumn(name = "LOCKER_Id")
-    private Locker locker;
+
+    @ManyToOne(fetch = FetchType.LAZY) //지연로딩, 가급적 실무에서는 지연로딩만을 쓸 것을 권장한다.
+    @JoinColumn
+    private Team team;
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
 
     public Long getId() {
         return id;
@@ -41,13 +51,6 @@ public class Member extends BaseEntity{
         this.username = username;
     }
 
-    public Locker getLocker() {
-        return locker;
-    }
-
-    public void setLocker(Locker locker) {
-        this.locker = locker;
-    }
 
     //단순 setter가 아닌 편의 메서드가 들어가면 메서드의 이름을 바꿔주는게 구분하기 좋다.
 //    public void changeTeam(Team team) {

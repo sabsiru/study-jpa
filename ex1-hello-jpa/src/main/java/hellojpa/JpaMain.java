@@ -25,6 +25,13 @@ public class JpaMain {
             //em.persist(child1);
             //em.persist(child2);
 
+            em.flush();
+            em.clear();
+
+            Parent findParent = em.find(parent.getClass(), parent.getId());
+            em.remove(findParent);
+            //findParent.getChildList().remove(0);
+
             tx.commit();
         } catch (Exception e) {
             System.out.println("rollback");

@@ -14,27 +14,33 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Address address = new Address("city", "street", "10000");
-
             Member member = new Member();
             member.setUsername("member1");
-            member.setHomeAddress(address);
+            Address address = new Address("city", "street", "10000");
+
+            member.getFavoriteFoods().add("치킨");
+            member.getFavoriteFoods().add("족발");
+            member.getFavoriteFoods().add("피자");
+
+            member.getAddressHistory().add(new Address("old1", "street", "10000"));
+            member.getAddressHistory().add(new Address("old2", "street", "10000"));
+
             em.persist(member);
 
-            Address copyAddress = new Address(address.getCity(), address.getStreet(), address.getZipcode());
+            em.flush();
+            em.clear();
+            System.out.println("====================");
+            Member findMember = em.find(Member.class, member.getId());
 
-            Member member2 = new Member();
-            member2.setUsername("member2");
-            //값을 공유하면 같이 변경됨. 그러므로 객체를 복사해서 넣어야함
-            //Address address2 = new Address("city", "street", "10000");
-            member2.setHomeAddress(copyAddress);
-            em.persist(member2);
+            List<Address> addressHistory = findMember.getAddressHistory();
+            for (Address address1 : addressHistory) {
+                System.out.println("address1 = " + address1.getCity());
+            }
 
-            //불변객체로 설계해야함 setter를 private로 하거나 만들지않아서 원천 차단
-            //member.getHomeAddress().setCity("newCity");
-            //값을 바꾸고 싶다면 통으로 갈아 끼워야한다.
-            Address newAddress = new Address("NewCIty", address.getStreet(), address.getZipcode());
-            member2.setHomeAddress(newAddress);
+            Set<String> favoriteFoods = findMember.getFavoriteFoods();
+            for (String favoriteFood : favoriteFoods) {
+                System.out.println("favoriteFood = " + favoriteFood);
+            }
 
             tx.commit();
         } catch (Exception e) {

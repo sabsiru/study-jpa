@@ -4,6 +4,10 @@ import org.hibernate.annotations.Fetch;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 //@Table (name = "MBR")  테이블의 이름 MBR을 매핑한다.
@@ -32,6 +36,19 @@ public class Member {
     @Embedded
     private Address homeAddress;
 
+    //값 타입 컬렉션 사용예제
+    @ElementCollection
+    @CollectionTable(name = "FAVORITE_FOODS", joinColumns =
+    @JoinColumn(name = "MEMBER_ID")
+    )
+    @Column(name = "FOOD_NAME")
+    private Set<String> favoriteFoods = new HashSet<>();
+
+    @ElementCollection
+    @CollectionTable(name = "ADDRESS", joinColumns =
+    @JoinColumn(name = "MEMBER_ID"))
+    private List<Address> addressHistory = new ArrayList<>();
+
     //중복
     public void setId(Long id) {
         this.id = id;
@@ -40,7 +57,7 @@ public class Member {
     @Embedded
     @AttributeOverrides({ //속성 재정의
             @AttributeOverride(name = "city",
-                    column = @Column(name ="WORK_CITY")),
+                    column = @Column(name = "WORK_CITY")),
             @AttributeOverride(name = "street",
                     column = @Column(name = "WORK_STREET")),
             @AttributeOverride(name = "zipcode",
@@ -74,6 +91,30 @@ public class Member {
 
     public void setHomeAddress(Address homeAddress) {
         this.homeAddress = homeAddress;
+    }
+
+    public Set<String> getFavoriteFoods() {
+        return favoriteFoods;
+    }
+
+    public void setFavoriteFoods(Set<String> favoriteFoods) {
+        this.favoriteFoods = favoriteFoods;
+    }
+
+    public List<Address> getAddressHistory() {
+        return addressHistory;
+    }
+
+    public void setAddressHistory(List<Address> addressHistory) {
+        this.addressHistory = addressHistory;
+    }
+
+    public Address getWorkAddress() {
+        return workAddress;
+    }
+
+    public void setWorkAddress(Address workAddress) {
+        this.workAddress = workAddress;
     }
 
     //단순 setter가 아닌 편의 메서드가 들어가면 메서드의 이름을 바꿔주는게 구분하기 좋다.

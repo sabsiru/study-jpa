@@ -16,31 +16,34 @@ public class JpaMain {
         try {
             Member member = new Member();
             member.setUsername("member1");
-            Address address = new Address("city", "street", "10000");
+            member.setHomeAddress(new Address("city", "street", "10000"));
 
             member.getFavoriteFoods().add("치킨");
             member.getFavoriteFoods().add("족발");
             member.getFavoriteFoods().add("피자");
 
-            member.getAddressHistory().add(new Address("old1", "street", "10000"));
-            member.getAddressHistory().add(new Address("old2", "street", "10000"));
+            member.getAddressHistory().add(new AddressEntity("old1", "street", "10000"));
+            member.getAddressHistory().add(new AddressEntity("old2", "street", "10000"));
 
             em.persist(member);
 
             em.flush();
             em.clear();
-            System.out.println("====================");
+
+            System.out.println("=========start===========");
             Member findMember = em.find(Member.class, member.getId());
 
-            List<Address> addressHistory = findMember.getAddressHistory();
-            for (Address address1 : addressHistory) {
-                System.out.println("address1 = " + address1.getCity());
-            }
+            Address a = findMember.getHomeAddress();
+            findMember.setHomeAddress(new Address("newCity",a.getStreet(),a.getZipcode()));
 
-            Set<String> favoriteFoods = findMember.getFavoriteFoods();
-            for (String favoriteFood : favoriteFoods) {
-                System.out.println("favoriteFood = " + favoriteFood);
-            }
+            //치킨 -> 한식
+            findMember.getFavoriteFoods().remove("치킨");
+            findMember.getFavoriteFoods().add("한식");
+
+            //이 방식으로는 데이터를 모두 삭제하고 남은 값을 재생성한다. 실무에서는 사용x
+            //실무에서는 일대다 관계를 고려하는것이 낫다.
+//            findMember.getAddressHistory().remove(new AddressEntity("old1", "street", "10000"));
+//            findMember.getAddressHistory().add(new AddressEntity("newCity1", "street", "10000"));
 
             tx.commit();
         } catch (Exception e) {

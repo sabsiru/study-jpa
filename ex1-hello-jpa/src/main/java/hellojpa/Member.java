@@ -44,10 +44,14 @@ public class Member {
     @Column(name = "FOOD_NAME")
     private Set<String> favoriteFoods = new HashSet<>();
 
-    @ElementCollection
-    @CollectionTable(name = "ADDRESS", joinColumns =
-    @JoinColumn(name = "MEMBER_ID"))
-    private List<Address> addressHistory = new ArrayList<>();
+    //이 방식으로는 데이터를 모두 삭제하고 남은 값을 재생성한다. 실무에서는 사용x
+    //실무에서는 일대다 관계를 고려하는것이 낫다.
+//    @ElementCollection
+//    @CollectionTable(name = "ADDRESS", joinColumns =
+//    @JoinColumn(name = "MEMBER_ID"))
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "MEMBER_ID")
+    private List<AddressEntity> addressHistory = new ArrayList<>();
 
     //중복
     public void setId(Long id) {
@@ -101,11 +105,11 @@ public class Member {
         this.favoriteFoods = favoriteFoods;
     }
 
-    public List<Address> getAddressHistory() {
+    public List<AddressEntity> getAddressHistory() {
         return addressHistory;
     }
 
-    public void setAddressHistory(List<Address> addressHistory) {
+    public void setAddressHistory(List<AddressEntity> addressHistory) {
         this.addressHistory = addressHistory;
     }
 

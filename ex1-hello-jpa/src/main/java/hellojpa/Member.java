@@ -26,6 +26,7 @@ public class Member {
 
     @Column(name = "name", nullable = false)
     private String username;
+    private int age;
 
     //기간 Period
     //embedded 객체로 관리, 클래스는 따로지만 테이블은 하나
@@ -119,6 +120,14 @@ public class Member {
 
     public void setWorkAddress(Address workAddress) {
         this.workAddress = workAddress;
+    }
+
+   public int getAge() {
+       return age;
+   }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 
     //단순 setter가 아닌 편의 메서드가 들어가면 메서드의 이름을 바꿔주는게 구분하기 좋다.
